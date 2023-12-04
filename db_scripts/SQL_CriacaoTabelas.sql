@@ -1,0 +1,53 @@
+USE [PythonTradesDB]
+GO
+
+/****** Object:  Table [dbo].[tbOrdens]    Script Date: 20/11/2023 00:14:56 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[tbOrdens](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[ID_BINANCE] [int] NOT NULL,
+	[MOEDA] [char](10) NOT NULL,
+	[QUANTIDADE] [numeric](18, 8) NOT NULL,
+	[PRECO_REAL] [numeric](18, 8) NOT NULL,
+	[PRECO_DOLLAR] [numeric](18, 4) NOT NULL,
+	[DATA_PEDIDO] [datetime] NOT NULL,
+	[DATA_EXECUCAO] [datetime] NULL
+ CONSTRAINT [PK_tbOrdens] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+USE [PythonTradesDB]
+GO
+
+/****** Object:  Table [dbo].[tbSaldoCarteira]    Script Date: 25/11/2023 21:15:20 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[tbSaldoCarteira](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[MOEDA] [char](10) NOT NULL,
+	[QUANTIDADE] [numeric](18, 8) NOT NULL,
+	[VALOR_REAIS] [numeric](18, 4) NOT NULL,
+	[VALOR_DOLLAR] [numeric](18, 4) NOT NULL,
+	[SALDO_REAIS] [numeric](18, 2) NULL,
+	[SALDO_DOLLAR] [numeric](18, 2) NULL,
+	[DATA] [datetime] NULL,
+ CONSTRAINT [PK_tbSaldoCarteira] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+DROP TABLE [dbo].[tbSaldoCarteira]
+
