@@ -6,12 +6,20 @@
 
 from secrets import api_secret, api_key, private_key_pass
 from subs_db import CONNECT, INSERT_INTO
+
 from binance.client import Client
 from datetime import datetime
+import os
 
 client = Client(api_key=api_key, api_secret=api_secret, private_key_pass=private_key_pass)
 url = "https://api.binance.com/api/v1/sua-requisicao"
-conta = client.get_account()
+try:
+    conta = client.get_account()
+except:
+    os.system('w32tm /resync')
+finally:
+    conta = client.get_account()
+
 saldo_total_reais = 0
 saldo_total_dollar = 0
 conexaoDB = CONNECT()
