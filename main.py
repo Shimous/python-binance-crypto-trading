@@ -11,6 +11,7 @@ from binance.client import Client
 from datetime import datetime
 import os
 
+#Conexão com api Binance------------------------------------------------------------------------------------------------
 client = Client(api_key=api_key, api_secret=api_secret, private_key_pass=private_key_pass)
 url = "https://api.binance.com/api/v1/sua-requisicao"
 try:
@@ -24,6 +25,7 @@ saldo_total_reais = 0
 saldo_total_dollar = 0
 conexaoDB = CONNECT()
 
+#Gravação das cotações dos ativos com saldo > 0, no DB
 for asset in conta['balances']:
     moeda = asset['asset']
     quantidade = float(asset['free'])
@@ -42,7 +44,7 @@ for asset in conta['balances']:
 
         print(f'{moeda}: qtd = {quantidade}, Cotação atual R$ = {cotacao_reais}, Cotação atual $ = {cotacao_dollar} ')
         print(f'----> Saldo R$: {round(saldo_reais, 2)}, Saldo $: {round(saldo_dollar, 2)}')
-        INSERT_INTO(conexaoDB, 'tbSaldoCarteira', moeda, quantidade, cotacao_reais, cotacao_dollar, saldo_reais, saldo_dollar, data_hora_requisicao)
+        INSERT_INTO(conexaoDB, 'tbSaldoCarteira', moeda, quantidade, cotacao_reais, cotacao_dollar, saldo_reais=saldo_reais, saldo_dollar=saldo_dollar, data_hora=data_hora_requisicao)
 
         saldo_total_reais = saldo_total_reais + saldo_reais
         saldo_total_dollar = saldo_total_dollar + saldo_dollar

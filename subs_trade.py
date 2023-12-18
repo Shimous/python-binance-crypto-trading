@@ -1,13 +1,4 @@
-#Subrotinas do sistema
-import requests
+# Subrotinas de trading
+import pandas as pd
+from subs_db import CONNECT, SELECT, INSERT_INTO
 
-url = 'https://api.binance.com/api/v3/exchangeInfo'
-response = requests.get(url)
-exchange_info = response.json()
-
-# Lista de símbolos (pares de trading)
-symbols = [symbol['symbol'] for symbol in exchange_info['symbols']]
-
-for symbol in symbols:
-    if 'BRL' in symbol:
-        print(symbol)
