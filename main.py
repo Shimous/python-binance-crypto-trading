@@ -35,7 +35,7 @@ for asset in conta['balances']:
         try:
             cotacao_reais = float(client.get_recent_trades(symbol=symbol_reais, limit=1)[0]['price'])
         except:
-            cotacao_reais = None
+            cotacao_reais = 'Null'
 
         try:
             cotacao_dollar = float(client.get_recent_trades(symbol=symbol_dollar, limit=1)[0]['price'])
@@ -52,18 +52,18 @@ for asset in conta['balances']:
             saldo_reais = cotacao_reais * quantidade
         except TypeError as exc:
             saldo_reais = 0
-        saldo_dollar = cotacao_dollar * quantidade
 
+        saldo_dollar = cotacao_dollar * quantidade
 
         print(f'{moeda}: qtd = {quantidade}, Cotação atual R$ = {cotacao_reais}, Cotação atual $ = {cotacao_dollar} ')
         print(f'----> Saldo R$: {round(saldo_reais, 2)}, Saldo $: {round(saldo_dollar, 2)}')
         INSERT_INTO(conexaoDB, 'tbSaldoCarteira', moeda, quantidade, cotacao_reais, cotacao_dollar, saldo_reais=saldo_reais, saldo_dollar=saldo_dollar, data_hora=data_hora_requisicao)
 
-        saldo_total_reais = saldo_total_reais + saldo_reais
-        saldo_total_dollar = saldo_total_dollar + saldo_dollar
+        saldo_total_reais += saldo_reais
+        saldo_total_dollar += saldo_dollar
 
 print('==================================================')
-print(f'Saldo total 11R$: {round(saldo_total_reais,2)}, Saldo total $: {round(saldo_total_dollar, 2)}')
+print(f'Saldo total R$: {round(saldo_total_reais,2)}, Saldo total $: {round(saldo_total_dollar, 2)}')
 cotacao_dollar_real = float(client.get_recent_trades(symbol='USDTBRL', limit=1)[0]['price'])
 print(f'Cotação do Dollar: R${round(cotacao_dollar_real,2)}')
 
