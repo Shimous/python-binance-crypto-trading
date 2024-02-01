@@ -4,7 +4,7 @@ Cartilha Trade de CriptoMoedas - Python e Binance API.pdf
 gabarito.py
 O início de algo grande.png
 secrets.py
-__pycache__
+__pycache__/
 
 # User-specific stuff
 .idea/**/workspace.xml
@@ -12,3 +12,4 @@ __pycache__
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+.idea/**/gitignore
