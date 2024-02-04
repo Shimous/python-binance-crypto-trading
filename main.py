@@ -25,18 +25,17 @@ saldo_total_reais = 0
 saldo_total_dollar = 0
 conexaoDB = CONNECT()
 
+cotacao_USDT_real = float(client.get_recent_trades(symbol='USDTBRL', limit=1)[0]['price'])
+cotacao_FDUSD_USDT = float(client.get_recent_trades(symbol='FDUSDUSDT', limit=1)[0]['price'])
+cotacao_dollar_real = cotacao_USDT_real / cotacao_FDUSD_USDT
+
 #Gravação das cotações dos ativos com saldo > 0, no DB
 for asset in conta['balances']:
     moeda = asset['asset']
     quantidade = float(asset['free'])
-    if float(quantidade) > 0:
-        symbol_reais = f'{moeda}BRL'
-        symbol_dollar = f'{moeda}FDUSD'
-        try:
-            cotacao_reais = float(client.get_recent_trades(symbol=symbol_reais, limit=1)[0]['price'])
-        except:
-            cotacao_reais = 'Null'
 
+    if float(quantidade) > 0:
+        symbol_dollar = f'{moeda}FDUSD'
         try:
             cotacao_dollar = float(client.get_recent_trades(symbol=symbol_dollar, limit=1)[0]['price'])
         except:
@@ -45,15 +44,12 @@ for asset in conta['balances']:
                 cotacao_dollar = float(client.get_recent_trades(symbol=symbol_dollar, limit=1)[0]['price'])
             except:
                 symbol_dollar = f'{moeda}USDT'
-                cotacao_dollar = float(client.get_recent_trades(symbol=symbol_dollar, limit=1)[0]['price'])
+                cotacao_dollar = float(client.get_recent_trades(symbol=symbol_dollar, limit=1)[0]['price']) / cotacao_FDUSD_USDT
         data_hora_requisicao = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
 
-        try:
-            saldo_reais = cotacao_reais * quantidade
-        except TypeError as exc:
-            saldo_reais = 0
-
         saldo_dollar = cotacao_dollar * quantidade
+        cotacao_reais = cotacao_dollar * cotacao_dollar_real
+        saldo_reais = saldo_dollar * cotacao_dollar_real
 
         print(f'{moeda}: qtd = {quantidade}, Cotação atual R$ = {cotacao_reais}, Cotação atual $ = {cotacao_dollar} ')
         print(f'----> Saldo R$: {round(saldo_reais, 2)}, Saldo $: {round(saldo_dollar, 2)}')
@@ -64,7 +60,6 @@ for asset in conta['balances']:
 
 print('==================================================')
 print(f'Saldo total R$: {round(saldo_total_reais,2)}, Saldo total $: {round(saldo_total_dollar, 2)}')
-cotacao_dollar_real = float(client.get_recent_trades(symbol='USDTBRL', limit=1)[0]['price'])
 print(f'Cotação do Dollar: R${round(cotacao_dollar_real,2)}')
 
 #丂んﾉﾶのひ丂
